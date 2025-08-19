@@ -1,0 +1,51 @@
+(cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF'
+diff --git a/coffee-admin/index.html b/coffee-admin/index.html
+--- a/coffee-admin/index.html
++++ b/coffee-admin/index.html
+@@ -0,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Café Admin — Sign in</title>
+	<link rel="stylesheet" href="admin.css" />
+	<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90'%3E%E2%98%95%EF%B8%8F%3C/text%3E%3C/svg%3E" />
+</head>
+<body>
+	<main class="auth-layout">
+		<section class="auth-card" aria-labelledby="brand-title">
+			<div class="brand">
+				<div class="logo" aria-hidden="true">☕</div>
+				<h1 id="brand-title">Café Admin</h1>
+				<p class="subtitle">Manage your brews with ease</p>
+			</div>
+
+			<form id="loginForm" class="auth-form" novalidate>
+				<div class="field">
+					<label for="username">Username</label>
+					<input id="username" name="username" type="text" autocomplete="username" required placeholder="admin" />
+				</div>
+				<div class="field password-field">
+					<label for="password">Password</label>
+					<input id="password" name="password" type="password" autocomplete="current-password" required placeholder="••••••••" />
+					<button type="button" class="icon-button" id="togglePassword" aria-label="Show password">👁️</button>
+				</div>
+				<div class="field row">
+					<label class="checkbox">
+						<input id="remember" name="remember" type="checkbox" />
+						<span>Remember me</span>
+					</label>
+					<a class="muted" href="#" aria-disabled="true">Forgot password?</a>
+				</div>
+				<div id="loginError" class="form-error" role="alert" aria-live="polite"></div>
+				<button type="submit" class="primary-button">Sign in</button>
+				<p class="tip">Tip: username <strong>admin</strong> · password <strong>coffee123</strong></p>
+			</form>
+		</section>
+	</main>
+
+	<script src="assets/app.js"></script>
+</body>
+</html>
+)
