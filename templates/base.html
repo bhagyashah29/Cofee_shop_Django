@@ -1,0 +1,24 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Coffee App</title>
+  <link rel="stylesheet" href="{% static "style.css" %}">
+</head>
+<body>
+  <nav>
+    <a href="/">Home</a>
+    {% if request.user.is_authenticated %}
+      <span>Logged in as {{ request.user.username }}</span>
+    {% else %}
+      <a href="{% url "login" %}">Login</a>
+      <a href="{% url "register" %}">Register</a>
+    {% endif %}
+  </nav>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
