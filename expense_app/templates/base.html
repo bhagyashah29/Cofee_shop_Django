@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Expense App{% endblock %}</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+</head>
+<body>
+  <nav class="container">
+    <ul>
+      <li><strong>Expense App</strong></li>
+    </ul>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="{{ url_for('expenses.my_expenses') }}">My Expenses</a></li>
+      <li><a href="{{ url_for('approvals.approvals_queue') }}">Approvals</a></li>
+      <li><a href="{{ url_for('admin.admin_home') }}">Admin</a></li>
+      <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div>
+          {% for category, message in messages %}
+            <article class="{{ category }}">{{ message }}</article>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

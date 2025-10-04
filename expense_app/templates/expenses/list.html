@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}My Expenses{% endblock %}
+{% block content %}
+<h2>My Expenses</h2>
+<p>List of expenses (coming soon).</p>
+<a href="{{ url_for('expenses.new_expense') }}">New Expense</a>
+{% endblock %}
