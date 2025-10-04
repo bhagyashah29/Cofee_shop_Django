@@ -1,0 +1,10 @@
+from flask import Blueprint, render_template
+from flask_login import login_required
+
+admin_bp = Blueprint('admin', __name__, template_folder='../../templates/admin')
+
+
+@admin_bp.get('/')
+@login_required
+def admin_home():
+    return render_template('admin/dashboard.html')

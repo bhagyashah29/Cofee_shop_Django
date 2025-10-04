@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Sign up{% endblock %}
+{% block content %}
+<h2>Sign up</h2>
+<form method="post">
+  <label>Company Name <input type="text" name="company_name" required></label>
+  <label>Country <input type="text" name="country" placeholder="United States" required></label>
+  <label>Full Name <input type="text" name="name" required></label>
+  <label>Email <input type="email" name="email" required></label>
+  <label>Password <input type="password" name="password" required></label>
+  <button type="submit">Create Account</button>
+</form>
+{% endblock %}
