@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Approvals Inbox</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Expense</th><th>Employee</th><th>Company Amount</th><th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for a in assignments %}
+      <tr>
+        <td>#{{ a.expense.id }} on {{ a.expense.expense_date }} ({{ a.expense.category }})</td>
+        <td>{{ a.expense.employee.name }}</td>
+        <td>{{ a.expense.amount_company|round(2) }} {{ a.expense.currency_company }}</td>
+        <td>
+          <form method="post" action="/manager/decide/{{ a.id }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <input name="comment" placeholder="Comment" />
+            <button name="decision" value="APPROVED">Approve</button>
+            <button name="decision" value="REJECTED">Reject</button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<p><a href="/manager/team">View team expenses</a></p>
+{% endblock %}

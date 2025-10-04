@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Admin Dashboard</h2>
+<section>
+  <h3>Company Settings</h3>
+  <form method="post" action="/admin/company">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <label>Name</label>
+    <input name="name" value="{{ company.name }}" />
+
+    <label>Manager is first approver?</label>
+    <input type="checkbox" name="manager_approver_enabled" value="1" {% if company.manager_approver_enabled %}checked{% endif %} />
+
+    <fieldset>
+      <legend>Conditional Rules</legend>
+      <label>Use percentage rule?</label>
+      <input type="checkbox" name="use_percentage_rule" value="1" {% if company.use_percentage_rule %}checked{% endif %} />
+      <label>Threshold %</label>
+      <input type="number" name="percentage_threshold" min="1" max="100" value="{{ company.percentage_threshold }}" />
+
+      <label>Use specific approver rule?</label>
+      <input type="checkbox" name="use_specific_approver_rule" value="1" {% if company.use_specific_approver_rule %}checked{% endif %} />
+      <label>Specific approver user ID</label>
+      <input type="number" name="specific_approver_user_id" value="{{ company.specific_approver_user_id or '' }}" />
+
+      <label>Hybrid operator</label>
+      <select name="hybrid_operator">
+        <option value="OR" {% if company.hybrid_operator == 'OR' %}selected{% endif %}>OR</option>
+        <option value="AND" {% if company.hybrid_operator == 'AND' %}selected{% endif %}>AND</option>
+      </select>
+    </fieldset>
+
+    <button type="submit">Save</button>
+  </form>
+</section>
+
+<section>
+  <h3>Users</h3>
+  <form method="post" action="/admin/users">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <input name="name" placeholder="Name" required />
+    <input type="email" name="email" placeholder="Email" required />
+    <input type="password" name="password" placeholder="Password" required />
+    <label>Role</label>
+    <select name="role">
+      <option value="EMPLOYEE">Employee</option>
+      <option value="MANAGER">Manager</option>
+      <option value="ADMIN">Admin</option>
+    </select>
+    <label>Manager ID (optional)</label>
+    <input type="number" name="manager_id" />
+    <button type="submit">Add User</button>
+  </form>
+
+  <table>
+    <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Role</th><th>Manager</th></tr></thead>
+    <tbody>
+      {% for u in users %}
+      <tr>
+        <td>{{ u.id }}</td>
+        <td>{{ u.name }}</td>
+        <td>{{ u.email }}</td>
+        <td>{{ u.role.value }}</td>
+        <td>{{ u.manager_id or '-' }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h3>Approval Steps</h3>
+  <form method="post" action="/admin/steps">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <input name="name" placeholder="Step Name" required />
+    <input name="sequence" type="number" min="1" placeholder="Sequence" required />
+    <label>Manager step?</label>
+    <input type="checkbox" name="is_manager_step" value="1" />
+    <label>Approver User ID</label>
+    <input type="number" name="approver_user_id" />
+    <label>Approver Role</label>
+    <select name="approver_role">
+      <option value="">-- None --</option>
+      <option value="EMPLOYEE">Employee</option>
+      <option value="MANAGER">Manager</option>
+      <option value="ADMIN">Admin</option>
+    </select>
+    <button type="submit">Add Step</button>
+  </form>
+
+  <ul>
+    {% for s in steps %}
+      <li>
+        #{{ s.sequence }} - {{ s.name }}
+        <form style="display:inline" method="post" action="/admin/steps/{{ s.id }}/delete">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <button type="submit">Delete</button>
+        </form>
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+<p><a href="/admin/expenses">View all expenses</a></p>
+{% endblock %}
