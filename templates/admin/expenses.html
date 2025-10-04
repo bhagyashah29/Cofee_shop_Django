@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>All Expenses</h2>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th><th>Employee</th><th>Date</th><th>Category</th><th>Company Amount</th><th>Status</th><th>Override</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for e in expenses %}
+      <tr>
+        <td>{{ e.id }}</td>
+        <td>{{ e.employee.name }}</td>
+        <td>{{ e.expense_date }}</td>
+        <td>{{ e.category }}</td>
+        <td>{{ e.amount_company|round(2) }} {{ e.currency_company }}</td>
+        <td>{{ e.status.value }}</td>
+        <td>
+          {% if e.status.value in ['PENDING', 'REJECTED'] %}
+            <form method="post" action="/admin/expenses/{{ e.id }}/override" style="display:inline">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+              <button name="action" value="approve">Force Approve</button>
+            </form>
+          {% endif %}
+          {% if e.status.value in ['PENDING', 'APPROVED'] %}
+            <form method="post" action="/admin/expenses/{{ e.id }}/override" style="display:inline">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+              <button name="action" value="reject">Force Reject</button>
+            </form>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

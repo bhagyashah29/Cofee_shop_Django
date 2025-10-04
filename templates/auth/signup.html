@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Create Company & Admin</h2>
+<form method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+  <label>Company Name</label>
+  <input name="company_name" required />
+
+  <label>Country</label>
+  <select name="country" required>
+    {% for country, currency in countries.items() %}
+      <option value="{{ country }}">{{ country }} ({{ currency }})</option>
+    {% endfor %}
+  </select>
+
+  <label>Your Name</label>
+  <input name="name" required />
+
+  <label>Email</label>
+  <input type="email" name="email" required />
+
+  <label>Password</label>
+  <input type="password" name="password" required />
+
+  <button type="submit">Create</button>
+</form>
+{% endblock %}
